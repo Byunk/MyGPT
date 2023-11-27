@@ -8,19 +8,19 @@ KEY_FILE = "key.json"
 
 
 class Client(metaclass=ABCMeta):
-    def __init__(self):
+    def __init__(self, api_key):
         if os.path.isfile(KEY_FILE):
             self.client = LLMServiceClient()
         else:
-            self.client = OpenAIClient()
+            self.client = OpenAIClient(api_key)
 
     def create_completion(self, system_prompt, user_prompt):
         return self.client.create_completion(system_prompt, user_prompt)
 
 
 class OpenAIClient(Client):
-    def __init__(self):
-        self.client = OpenAI()
+    def __init__(self, api_key):
+        self.client = OpenAI(api_key=api_key)
 
     def create_completion(self, system_prompt, user_prompt):
         completion = self.client.chat.completions.create(
